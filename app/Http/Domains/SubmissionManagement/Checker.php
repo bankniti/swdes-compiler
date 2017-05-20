@@ -73,7 +73,7 @@ class Checker {
         }
 
         foreach ($test_case as $tc){
-            
+
             // Convert input/output to string
             $input = $checker->convertIO($tc['input']);
             $output = $checker->convertIO($tc['output']);
@@ -94,7 +94,7 @@ class Checker {
 
         Answer::fncUpdateResult($user_id, $question_id, TRUE, $score, $msg);
         return array(
-            'status' => FALSE,
+            'status' => TRUE,
             'message' => $msg,
             'last_updated' => date('Y-m-d H:i:s')
         );
