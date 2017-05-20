@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Http\Domains\SubmissionManagement\Checker;
+use App\Http\Domains\AnswerManagement\Answer;
 
 class CompileController extends Controller
 {
@@ -20,7 +21,6 @@ class CompileController extends Controller
 
     public function compile(Request $request)
     {
-
         /**
          *  Params
          *
@@ -50,6 +50,15 @@ class CompileController extends Controller
             $request->input('sourceCode'),
             $request->input('input'),
             $request->input('output'));
+
+        return $this->respond(Response::HTTP_OK, $output);
+    }
+
+    public function submitAnswer(Request $request)
+    {
+        $output = Checker::submitAnswer($request->input('lang'),
+            $request->input('user_id'),
+            $request->input('question_id'));
 
         return $this->respond(Response::HTTP_OK, $output);
     }

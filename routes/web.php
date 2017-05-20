@@ -25,3 +25,4 @@ $app->get('bank', function () {
  */
 $app->post('compile','CompileController@compile');
 $app->post('checkTestCase','CompileController@checkTestCase');
+$app->post('submit','CompileController@submitAnswer');
