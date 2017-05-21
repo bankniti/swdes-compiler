@@ -26,7 +26,7 @@ Python compiler service is the part of Term project of Software Design and Devel
 - `docker run -p 80:80 -d -v  $(pwd):/var/www/html -it --name my-compiler compiler-img`
 7. Run `composer update` in container (`docker exec -it my-compiler bash`).
 8. Create `.env` file (can copy from `.env.example`) and config Database connection here.
-
+9. Example SQL file for database at `/database/sql/` in code folder, can try to import it.
 
 ## Reference
 
