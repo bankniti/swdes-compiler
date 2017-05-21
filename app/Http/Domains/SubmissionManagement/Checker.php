@@ -45,11 +45,19 @@ class Checker {
     public static function checkTestCase($lang, $sourceCode, $input="", $output="")
     {
         $checker = new Checker();
+        $status = FALSE;
         $result = $checker->compile($lang, $sourceCode, $input);
 
         $result = trim(preg_replace('/\s+/', ' ', $result));
 
-        return $result == $output ? TRUE : FALSE;
+        if ($result == $output){
+            $status = TRUE;
+        }
+
+        return array(
+            'status' => $status,
+            'result' => $result
+        );
     }
 
     public static function submitAnswer($lang, $user_id, $question_id)
@@ -59,6 +67,14 @@ class Checker {
 
         $answer = Student_answer::where('user_id', $user_id)->where('question_id', $question_id)->first();
         $score = Question::where('id', $question_id)->first()->score;
+
+        if (!isset($answer) || empty($answer)){
+            return array(
+                'status' => FALSE,
+                'message' => 'There is no user with this question_id',
+                'last_updated' => date('Y-m-d H:i:s')
+            );
+        }
 
         $sourceCode = $answer['script'];
 
@@ -81,8 +97,8 @@ class Checker {
             // Check answer between source code and input/output
             $checkAnswer = $checker->checkTestCase($lang, $sourceCode, $input, $output);
 
-            if ($checkAnswer == FALSE){
-                $msg = 'Error at Test Case ID : '. $tc['id'];
+            if ($checkAnswer['status'] == FALSE){
+                $msg = 'Error at Test Case ID : '. $tc['id'] . ', Output : '.$checkAnswer['result'];
                 Answer::fncUpdateResult($user_id, $question_id, FALSE, 0, $msg);
                 return array(
                     'status' => FALSE,
